@@ -9,20 +9,8 @@ public class Main {
 
     public static void main(String[] args) {
         input();
-
-        if (n == 1) {
-            System.out.println(0);
-            return;
-        }
-
-        for (int i = 4; i <= n; i++) {
-            dp[i] = dp[i-1] + 1;
-
-            if (i % 3 == 0) dp[i] = Math.min(dp[i], dp[i / 3] + 1);
-            if (i % 2 == 0) dp[i] = Math.min(dp[i], dp[i / 2] + 1);
-        }
-
-        System.out.println(dp[n]);
+        calculate();
+        output();
     }
 
 
@@ -31,30 +19,23 @@ public class Main {
             n = Integer.parseInt(br.readLine());
 
             dp = new int[n + 1];
-
-            if (n >= 1 && n <= 3) {
-                for (int i = 1; i <= n; i++) {
-                    dp[i] = 1;
-                }
-            } else {
-                dp[2] = dp[3] = 1;
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static int calculate(int n) {
-        if (n <= 1) {
-            return 0;
+    public static void calculate() {
+        dp[1] = 0;
+
+        for (int i = 2; i <= n; i++) {
+            dp[i] = dp[i-1] + 1;
+
+            if (i % 3 == 0) dp[i] = Math.min(dp[i], dp[i / 3] + 1);
+            if (i % 2 == 0) dp[i] = Math.min(dp[i], dp[i / 2] + 1);
         }
+    }
 
-        if (dp[n] != 0) return dp[n];
-
-        dp[n] = calculate(n - 1) + 1;
-        if (n % 3 == 0) dp[n] = Math.min(dp[n], calculate(n / 3) + 1);
-        if (n % 2== 0) dp[n] = Math.min(dp[n], calculate(n / 2) + 1);
-
-        return dp[n];
+    public static void output() {
+        System.out.println(dp[n]);
     }
 }
