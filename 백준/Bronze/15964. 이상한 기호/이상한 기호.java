@@ -6,7 +6,7 @@ import java.util.StringTokenizer;
 public class Main {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static StringTokenizer st;
-    
+
     public static void main(String[] args) throws IOException {
         new Main().solution();
     }
@@ -14,10 +14,10 @@ public class Main {
     void solution() throws IOException {
         st = new StringTokenizer(br.readLine());
 
-        int a = Integer.parseInt(st.nextToken());
-        int b = Integer.parseInt(st.nextToken());
+        long a = Long.parseLong(st.nextToken());
+        long b = Long.parseLong(st.nextToken());
 
-        int calc = (a + b) * (a - b);
+        Long calc = (a + b) * (a - b);
 
         System.out.println(calc);
     }
