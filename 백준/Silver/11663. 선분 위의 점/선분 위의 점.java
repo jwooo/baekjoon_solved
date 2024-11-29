@@ -35,8 +35,8 @@ public class Main {
             int startPoint = Integer.parseInt(st.nextToken());
             int endPoint = Integer.parseInt(st.nextToken());
 
-            int startIndex = findPointCount(startPoint, 0, arr.length - 1, true);
-            int endIndex = findPointCount(endPoint, 0, arr.length - 1, false);
+            int startIndex = findPointIndex(startPoint, true);
+            int endIndex = findPointIndex(endPoint, false);
 
             sb.append(endIndex - startIndex + 1).append("\n");
         }
@@ -44,7 +44,10 @@ public class Main {
         System.out.println(sb);
     }
 
-    private static int findPointCount(int key, int start, int end, boolean isStart) {
+    private static int findPointIndex(int key, boolean isStart) {
+        int start = 0;
+        int end = arr.length - 1;
+
         while (start <= end) {
             int mid = (start + end) / 2;
 
