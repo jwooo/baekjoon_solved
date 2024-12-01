@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-  BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-  StringTokenizer st;
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static StringTokenizer st;
 
     public static void main(String[] args) throws IOException {
         new Main().solution();
@@ -15,39 +15,39 @@ public class Main {
     void solution() throws IOException {
         int n = Integer.parseInt(br.readLine());
 
-        int[] arr = new int[n];
-
+        long[] arr = new long[n];
         st = new StringTokenizer(br.readLine());
+
         for (int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
+            arr[i] = Long.parseLong(st.nextToken());
         }
 
         Arrays.sort(arr);
 
-        int firstIndex = 0;
-        int secondIndex = 0;
-        int min = Integer.MAX_VALUE;
-        int startIndex = 0;
-        int endIndex = n - 1;
+        int start = 0;
+        int end = arr.length - 1;
 
-        while (startIndex < endIndex) {
-            int sum = arr[startIndex] + arr[endIndex];
+        int minStartIndex = 0;
+        int minEndIndex = end;
 
-            if (Math.abs(sum) <= min) {
-                min = Math.abs(sum);
-                firstIndex = startIndex;
-                secondIndex = endIndex;
+        long absSum = Math.abs(arr[start] + arr[end]);
+
+        while (start < end) {
+            if (Math.abs(arr[start] + arr[end]) < absSum) {
+                minStartIndex = start;
+                minEndIndex = end;
+
+                absSum = Math.abs(arr[start] + arr[end]);
             }
 
-            if (sum < 0) {
-                startIndex++;
-            } else if (sum > 0) {
-                endIndex--;
+            if (arr[start] + arr[end] > 0) {
+                end--;
             } else {
-                break;
+                start++;
             }
         }
 
-        System.out.println(arr[firstIndex] + " " + arr[secondIndex]);
+        System.out.println(arr[minStartIndex] + " " + arr[minEndIndex]);
     }
+
 }
