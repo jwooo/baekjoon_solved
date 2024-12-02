@@ -14,18 +14,21 @@ public class Main {
     void solution() throws IOException {
         // given
         int n = Integer.parseInt(br.readLine());
+        int r = 31;
+        int m = 1234567891;
+        long pow = 1;
         String text = br.readLine();
 
         // when
-        int result = 0;
+        long result = 0;
 
         for (int i = 0; i < n; i++) {
-            int value = text.charAt(i) - 'a' + 1;
-            result = result + (value * (int) Math.pow(31, i));
+            result += ((text.charAt(i) - 'a' + 1) * pow) % m;
+            pow = (pow * r) % m;
         }
 
         // then
-        System.out.println(result);
+        System.out.println(result % m);
     }
 
 }
