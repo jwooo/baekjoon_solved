@@ -22,12 +22,7 @@ class Solution {
             int nowValue = now[0];
             int nowIndex = now[1];
             
-            // System.out.print("[NOWVALUE] = " + nowValue);
-            // System.out.print(", [NOWINDEX] = " + nowIndex);
-            // System.out.println(", [MAX] = " + maxPriority);
-            
             if (maxPriority > nowValue) {
-            	// System.out.println(" > [maxPriority > nowValue] = " + nowValue);
                 queue.offer(new int[]{nowValue, nowIndex});
             } else {
                 if (nowIndex == location) isFind = true;
