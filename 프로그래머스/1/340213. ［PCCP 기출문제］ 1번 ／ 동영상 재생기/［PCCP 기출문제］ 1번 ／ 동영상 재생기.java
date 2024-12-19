@@ -5,109 +5,33 @@ class Solution {
     public String solution(String video_len, String pos, String op_start, String op_end, String[] commands) {
         String answer = "";
         
-        int[] videoSize = parseToIntArray(video_len);
-        int[] now = parseToIntArray(pos);
-        int[] openingStart = parseToIntArray(op_start);
-        int[] openingEnd = parseToIntArray(op_end);
+        int videoSize = convertToSecond(video_len);
+        int now = convertToSecond(pos);
+        int opStart = convertToSecond(op_start);
+        int opEnd = convertToSecond(op_end);
         
-         if (openingStart[0] < now[0] & openingEnd[0] > now[0]) {
-             now[0] = openingEnd[0];
-             now[1] = openingEnd[1];
-         } else if (openingStart[0] == now[0]) {
-             if (now[1] >= openingStart[1]) {
-                 now[0] = openingEnd[0];
-                 now[1] = openingEnd[1];
-             }
-         } else if (openingEnd[0] == now[0]) {
-             if (now[1] <= openingEnd[1]) {
-                 now[0] = openingEnd[0];
-                 now[1] = openingEnd[1];
-             }
-         }
+        if (now >= opStart && now <= opEnd) now = opEnd;
         
-        for (int i = 0; i < commands.length; i++) {
-            String command = commands[i];
+        for (String command : commands) {
+            if (command.equals("next")) now = now + 10 > videoSize ? videoSize : now + 10;
+            else now = now - 10 < 0 ? 0 : now - 10;
             
-            if (isNext(command)) {
-                int nextSecond = now[1] + 10;
-             
-                if (nextSecond >= 60) {
-                    now[0]++;
-                    now[1] = nextSecond - 60;
-                } else {
-                    now[1] = nextSecond;
-                }
-                
-                if (now[0] > videoSize[0]) {
-                    now[0] = videoSize[0];
-                    now[1] = videoSize[1];
-                } else if (now[0] == videoSize[0]) {
-                    if (now[1] > videoSize[1]) {
-                        now[1] = videoSize[1];
-                    }
-                }
-                
-            } else if (isPrev(command)) {
-                int prevSecond = now[1] - 10;
-                
-                if (prevSecond < 0) {
-                    if (now[0] == 0) {
-                        now[0] = 0;
-                        now[1] = 0;
-                    } else {
-                        now[0]--;
-                        now[1] = 50 + now[1];
-                    }
-                } else {
-                    now[1] = prevSecond;
-                }
-            }
-            
-            System.out.println("[NON-CHECK]" + now[0] + ":" + now[1]);
-            
-            if (openingStart[0] < now[0] & openingEnd[0] > now[0]) {
-                now[0] = openingEnd[0];
-                now[1] = openingEnd[1];
-            } else if (openingStart[0] == now[0] && openingEnd[0] == now[0]) {
-                if (now[1] >= openingStart[1] && now[1] <= openingEnd[1]) {
-                    now[0] = openingEnd[0];
-                    now[1] = openingEnd[1];
-                }
-            } else if (openingStart[0] == now[0]) {
-                if (now[1] >= openingStart[1]) {
-                    now[0] = openingEnd[0];
-                    now[1] = openingEnd[1];
-                }
-            } else if (openingEnd[0] == now[0]) {
-                if (now[1] <= openingEnd[1]) {
-                    now[0] = openingEnd[0];
-                    now[1] = openingEnd[1];
-                }
-            }
-            
+            if (now >= opStart && now <= opEnd) now = opEnd;
         }
         
-        String mm = now[0] / 10 == 0 ? "0" + now[0] : String.valueOf(now[0]);
-        String ss = now[1] / 10 == 0 ? "0" + now[1] : String.valueOf(now[1]);
+		int minute = now / 60;
+        int second = now % 60;
         
-        StringBuilder sb = new StringBuilder();
-        answer = sb.append(mm).append(":").append(ss).toString();
-        
-        System.out.println(sb.toString());
+        answer += minute < 10 ? "0" + minute : "" + minute;
+        answer += ":";
+        answer += second < 10 ? "0" + second : "" + second;
         
         return answer;
     }
     
-    private int[] parseToIntArray(String str) {
-        return Arrays.stream(str.split(":")).mapToInt(Integer::parseInt).toArray();
-    }
-    
-    private static boolean isNext(String str) {
-        return "next".equals(str);
-    }
-    
-    private static boolean isPrev(String str) {
-        return "prev".equals(str);
+    private int convertToSecond(String time) {
+        String[] split = time.split(":");
+        return Integer.parseInt(split[0]) * 60 + Integer.parseInt(split[1]);
     }
     
 }
