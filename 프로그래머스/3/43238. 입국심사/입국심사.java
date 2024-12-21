@@ -16,10 +16,10 @@ class Solution {
                 if (count > n) break;
             }
             
-            if (n <= count) {
-                end = mid;
-            } else {
+            if (count < n) {
                 start = mid + 1;
+            } else {
+                end = mid;
             }
         }
         
