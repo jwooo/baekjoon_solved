@@ -15,15 +15,15 @@ class Solution {
         PriorityQueue<int[]> queue = new PriorityQueue<>((o1, o2) -> o1[1] - o2[1]);
         
         for (int i = 0; i < times.length; i++) {
-            while (!queue.isEmpty() && queue.peek()[1] <= times[i][0]) {
-                queue.poll();
+            if (!queue.isEmpty() && queue.peek()[1] <= times[i][0]) {
+                queue.poll(); 
             }
             
             queue.offer(times[i]);
-            answer = Math.max(answer, queue.size());
+            // answer = Math.max(answer, queue.size());
         }
         
-        return answer;
+        return queue.size();
     }
     
     private int extractTime(String time) {
