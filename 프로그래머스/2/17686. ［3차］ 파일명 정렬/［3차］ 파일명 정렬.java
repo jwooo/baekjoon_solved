@@ -1,21 +1,59 @@
 import java.util.*;
-import java.util.regex.*;
 
 class Solution {
     public String[] solution(String[] files) {
-        Pattern p = Pattern.compile("([a-z\\s.-]+)([0-9]{1,5})");
+        List<File> fileList = new ArrayList<>();
         
-        Arrays.sort(files, (x, y) -> {
-           	Matcher m1 = p.matcher(x.toLowerCase());
-            Matcher m2 = p.matcher(y.toLowerCase());
+        for (int i = 0; i < files.length; i++) {
+            fileList.add(new File(files[i]));
+        }
+        
+        fileList.sort((file1, file2) -> {
+           	int headComparator = file1.head.compareTo(file2.head);
             
-            m1.find();
-            m2.find();
-            
-            if (!m1.group(1).equals(m2.group(1))) return m1.group(1).compareTo(m2.group(1));
-            else return Integer.parseInt(m1.group(2)) - Integer.parseInt(m2.group(2));
+            if (headComparator != 0) return headComparator;
+            return file1.number - file2.number;
         });
         
-        return files;
+        String[] answer = new String[files.length];
+        for (int i = 0; i < answer.length; i++) {
+            answer[i] = fileList.get(i).fileName;
+        }
+        
+        return answer;
+    }
+    
+    static class File {
+        String fileName;
+        String head;
+        int number;
+        
+        public File(String fileName) {
+            this.fileName = fileName;
+            parse();
+        }
+        
+        private void parse() {
+            int len = fileName.length();
+            int i = 0;
+            
+            StringBuilder headBuilder = new StringBuilder();
+            while (i < len && !Character.isDigit(fileName.charAt(i))) {
+                headBuilder.append(fileName.charAt(i));
+                i++;
+            }
+            
+            this.head = headBuilder.toString().toLowerCase();
+            
+            StringBuilder numberBuilder = new StringBuilder();
+            int count = 0;
+            while (i < len && Character.isDigit(fileName.charAt(i)) && count < 5) {
+                numberBuilder.append(fileName.charAt(i));
+                i++;
+                count++;
+            }
+            
+            this.number = Integer.parseInt(numberBuilder.toString());
+        }
     }
 }
