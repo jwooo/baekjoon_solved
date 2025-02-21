@@ -2,52 +2,44 @@ import java.util.*;
 
 class Solution {
     public int solution(int[] queue1, int[] queue2) {
-        int answer = 0;
+        long sum1 = 0;
+        long sum2 = 0;
         
-        long sumA = 0;
-        long sumB = 0;
-        
-        Deque<Integer> queueA = new ArrayDeque<>();
-        Deque<Integer> queueB =new ArrayDeque<>();
+        Queue<Integer> q1 = new LinkedList<>();
+        Queue<Integer> q2 = new LinkedList<>();
         
         for (int i = 0; i < queue1.length; i++) {
-            sumA += queue1[i];
-            sumB += queue2[i];
+            q1.offer(queue1[i]);
+            q2.offer(queue2[i]);
             
-            queueA.add(queue1[i]);
-            queueB.add(queue2[i]);
+            sum1 += queue1[i];
+            sum2 += queue2[i];
         }
         
-        if (sumA == sumB) return 0;
-        answer = func(queueA, queueB, sumA, sumB);
-     
-        return answer;
-    }
-    
-    private int func(Deque<Integer> queueA, Deque<Integer> queueB, long sumA, long sumB) {
+        long total = sum1 + sum2;
+        if (total % 2 != 0) return -1;
+        
+        long target = total / 2;
         int count = 0;
-        long target = (sumA + sumB) / 2;
-        int length = queueA.size() * 3;
-        int index = 0;
+        int maxOperations = queue1.length * 4;
         
-        while (index < length) {
-            index++;
+        while (count <= maxOperations) {
+            if (sum1 == target) return count;
+            if (sum1 > target) {
+                int x = q1.poll();
+                sum1 -= x;
+                sum2 += x;
+                q2.offer(x);
+            } else {
+                int x = q2.poll();
+                sum1 += x;
+                sum2 -= x;
+                q1.offer(x);
+            }
             
-            if (sumA > sumB) {
-                int value = queueA.poll();
-                queueB.add(value);
-                sumA -= value;
-                sumB += value;
-                count++;
-            } else if (sumA < sumB) {
-                int value = queueB.poll();
-                queueA.add(value);
-                sumA += value;
-                sumB -= value;
-                count++;
-            } else return count;
+            count++;
         }
-        
+       
         return -1;
     }
 }
