@@ -1,54 +1,47 @@
 import java.util.*;
 
 class Solution {
-    
-    static Map<String, Integer> map = new HashMap<>();
-    
     public String[] solution(String[] orders, int[] course) {
         List<String> answer = new ArrayList<>();
-        
-        for (int i = 0; i < orders.length; i++) {
-            StringBuilder sb = new StringBuilder();
-            String[] now = orders[i].split("");
-            Arrays.sort(now);
-            findCourses(now, sb, 0);
-        }
-        
-        for (int i = 0; i < course.length; i++) {
-            int courseCount = course[i];
-            int maxMenuCount = 0;
-            List<String> menu = new ArrayList<>();
+     
+        for (int courseSize : course) {
+            Map<String, Integer> map = new HashMap<>();
             
-            for (String key : map.keySet()) {
-                int count = map.get(key);
+            for (String order : orders) {
+                if (order.length() < courseSize) continue;
                 
-                if (key.length() == courseCount && count >= 2) {
-                    if (count == maxMenuCount) menu.add(key);
-                    else if (count > maxMenuCount) {
-                        menu.clear();
-                        maxMenuCount = count;
-                        menu.add(key);
-                    }
-                }
+                char[] charArr = order.toCharArray();
+                Arrays.sort(charArr);
+                String sortedOrder = new String(charArr);
+                
+                generateCombination(sortedOrder, courseSize, 0, "", map);
             }
             
-            if (!menu.isEmpty()) answer.addAll(menu);
+            int maxFrequency = 0;
+            for (int frequency : map.values()) {
+                if (frequency > maxFrequency) maxFrequency = frequency;
+            }
+            
+			if (maxFrequency < 2) continue;
+            
+            for (String menu : map.keySet()) {
+                if (map.get(menu) == maxFrequency) answer.add(menu);
+            }
         }
         
         Collections.sort(answer);
         return answer.toArray(String[]::new);
     }
     
-    private void findCourses(String[] order, StringBuilder sb, int nowIndex) {
-        if (sb.length() >= 2) map.put(sb.toString(), map.getOrDefault(sb.toString(), 0) + 1);
-        if (nowIndex >= order.length) return;
+    private void generateCombination(String order, int r, int index, String current, Map<String, Integer> map) {
+        if (current.length() == r) {
+            map.put(current, map.getOrDefault(current, 0) + 1);
+            return;
+        }
         
-        for (int i = nowIndex; i < order.length; i++) {
-            sb.append(order[i]);
-            findCourses(order, sb, i + 1);
-            sb.deleteCharAt(sb.length() - 1);
+        for (int i = index; i < order.length(); i++) {
+            generateCombination(order, r, i + 1, current + order.charAt(i), map);
         }
     }
-    
     
 }
