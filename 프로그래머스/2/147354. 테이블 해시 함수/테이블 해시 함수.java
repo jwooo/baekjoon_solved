@@ -9,19 +9,13 @@ class Solution {
             else return Integer.compare(j[0], i[0]);
         });
         
-        Queue<Integer> queue = new LinkedList<>();
         for (int i = row_begin - 1; i < row_end; i++) {
             int s = 0;
             for (int j = 0; j < data[i].length; j++) {
                 s += data[i][j] % (i + 1);
             }
-            
-            queue.offer(s);
-        }
-        
-        answer = queue.poll();
-        while (!queue.isEmpty()) {
-            answer = answer ^ queue.poll();
+         
+            answer = answer ^ s;
         }
         
         return answer;
