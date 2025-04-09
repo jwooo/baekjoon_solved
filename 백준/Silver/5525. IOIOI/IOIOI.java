@@ -13,36 +13,27 @@ public class Main {
     }
 
     void solution() throws IOException {
-        int answer = 0;
         int n = Integer.parseInt(br.readLine());
         int m = Integer.parseInt(br.readLine());
+        char[] c = br.readLine().toCharArray();
 
-        StringBuilder p = new StringBuilder();
-        char[] arr = br.readLine().toCharArray();
+        int result = 0;
+        int count = 0;
 
-        for (int i = 0; i < n; i++) {
-            p.append("IO");
-        }
-        p.append("I");
+        for (int i = 1; i < m - 1; i++) {
+            if (c[i - 1] == 'I' && c[i] == 'O' && c[i + 1] == 'I') {
+                count++;
 
-        StringBuilder range = new StringBuilder();
-        for (int i = 0; i < p.length(); i++) {
-            range.append(arr[i]);
-        }
-
-        if (range.toString().contentEquals(p)) {
-            answer++;
-        }
-
-        for (int i = 0; i < arr.length - p.length(); i++) {
-            range.deleteCharAt(0);
-            range.append(arr[i + p.length()]);
-
-            if (range.toString().contentEquals(p)) {
-                answer++;
+                if (count == n) {
+                    result++;
+                    count--;
+                }
+                i++;
+            } else {
+                count = 0;
             }
         }
 
-        System.out.println(answer);
+        System.out.println(result);
     }
 }
