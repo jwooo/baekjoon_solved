@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
+
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static StringTokenizer st;
 
@@ -11,25 +12,20 @@ public class Main {
         new Main().solution();
     }
 
-    void solution() throws IOException {
+    public void solution() throws IOException {
         int n = Integer.parseInt(br.readLine());
+        int answer = Integer.MAX_VALUE;
 
-        int count = 0;
+        for (int i = 0; i <= n / 5; i++) {
+            int now = n - (5 * i);
 
-        while (n > 0) {
-            if (n % 5 == 0) {
-                count = n / 5 + count;
-                break;
+            if (now % 2 == 0) {
+                answer = Math.min(answer, (now / 2) + i);
             }
-
-            n -= 2;
-            count++;
         }
 
-        if (n < 0) {
-            System.out.println(-1);
-        } else {
-            System.out.println(count);
-        }
+        answer = answer != Integer.MAX_VALUE ? answer : -1;
+        System.out.println(answer);
     }
+
 }
