@@ -2,37 +2,45 @@ import java.util.*;
 
 class Solution {
     public int solution(int[][] jobs) {
-        PriorityQueue<int[]> requestPq = new PriorityQueue<>((i, j) -> i[0] - j[0]);
+        int answer = 0;
         
-        for (int[] job : jobs) {
-            requestPq.offer(job);
-        }
-        
-        PriorityQueue<int[]> workPq = new PriorityQueue<>((i, j) -> {
-           	if (i[1] != j[1]) return i[1] - j[1];
-            return i[0] - j[0];
+        PriorityQueue<int[]> requestPq = new PriorityQueue<>((i, j) -> {
+           if (i[1] == j[1]) return Integer.compare(i[2], j[2]);
+            return Integer.compare(i[1], j[1]);
         });
         
-        int totalResponseTime = 0;
-        int nowTime = 0;
-        int completedJobs = 0;
+        PriorityQueue<int[]> workPq = new PriorityQueue<>((i, j) -> {
+            if (i[2] != j[2]) return Integer.compare(i[2], j[2]);
+            if (i[1] != j[1]) return Integer.compare(i[1], j[1]);
+            return Integer.compare(i[0], j[0]);
+        });
         
-        while (completedJobs < jobs.length) {
-            while (!requestPq.isEmpty() && requestPq.peek()[0] <= nowTime) {
+        for (int i = 0; i < jobs.length; i++) {
+            int[] job = jobs[i];
+            requestPq.offer(new int[] {i, job[0], job[1]});
+        }
+        
+        int nowTime = requestPq.peek()[1];
+        workPq.offer(requestPq.poll());
+        
+        while (!workPq.isEmpty()) {
+            int[] nowWork = workPq.poll();
+            
+            nowTime += nowWork[2];
+            answer += nowTime - nowWork[1];
+            
+            while (!requestPq.isEmpty() && requestPq.peek()[1] <= nowTime) {
                 workPq.offer(requestPq.poll());
             }
-           	
-            if (!workPq.isEmpty()) {
-                int[] nowJob = workPq.poll();
-                nowTime += nowJob[1];
-                totalResponseTime += (nowTime - nowJob[0]);
-                completedJobs++;
-            } else {
-                if (!requestPq.isEmpty()) nowTime = requestPq.peek()[0];
-                else break;
+            
+            if (workPq.isEmpty() && !requestPq.isEmpty()) {
+                int[] next = requestPq.poll();
+                nowTime = next[1];
+                workPq.offer(next);
             }
         }
         
-        return totalResponseTime / jobs.length;
+        answer /= jobs.length;
+        return answer;
     }
 }
