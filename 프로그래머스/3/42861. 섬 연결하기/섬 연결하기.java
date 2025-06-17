@@ -2,58 +2,57 @@ import java.util.*;
 
 class Solution {
     public int solution(int n, int[][] costs) {
+        int answer = 0;
+        List<List<Edge>> graph = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        for (int[] cost : costs) {
+            int start = cost[0];
+            int end = cost[1];
+            int weight = cost[2];
+
+            graph.get(start).add(new Edge(end, weight));
+            graph.get(end).add(new Edge(start, weight));
+        }
+
         boolean[] visited = new boolean[n];
         PriorityQueue<Edge> pq = new PriorityQueue<>();
-        int answer = 0;
-        int count = 0;
-        
-        visited[0] = true;
-        for (int[] cost : costs) {
-            if (cost[0] == 0 || cost[1] == 0) {
-                pq.offer(new Edge(cost[0], cost[1], cost[2]));
+        pq.offer(new Edge(0, 0));
+
+        while (!pq.isEmpty()) {
+            Edge now = pq.poll();
+
+            if (visited[now.node]) {
+                continue;
             }
-        }
-        
-        while (!pq.isEmpty() && count < n - 1) {
-            Edge edge = pq.poll();
-            int next = -1;
-            
-            if (!visited[edge.start] && visited[edge.end]) {
-                next = edge.start;
-            } else if (visited[edge.start] && !visited[edge.end]) {
-                next = edge.end;
-            } else {
-                continue; 
-            }
-            
-            visited[next] = true;
-            answer += edge.weight;
-            count++;
-            
-            for (int[] cost : costs) {
-                if (cost[0] == next && !visited[cost[1]]) {
-                    pq.offer(new Edge(cost[0], cost[1], cost[2]));
-                } else if (cost[1] == next && !visited[cost[0]]) {
-                    pq.offer(new Edge(cost[0], cost[1], cost[2]));
+
+            visited[now.node] = true;
+            answer += now.weight;
+
+            for (Edge next : graph.get(now.node)) {
+                if (!visited[next.node]) {
+                    pq.offer(next);
                 }
             }
         }
-        
+
         return answer;
     }
 
     static class Edge implements Comparable<Edge> {
-        int start, end, weight;
+        int node;
+        int weight;
 
-        public Edge(int start, int end, int weight) {
-            this.start = start;
-            this.end = end;
+        public Edge(int node, int weight) {
+            this.node = node;
             this.weight = weight;
         }
 
         @Override
-        public int compareTo(Edge e) {
-            return this.weight - e.weight;
+        public int compareTo(Edge o) {
+            return this.weight - o.weight;
         }
     }
 }
