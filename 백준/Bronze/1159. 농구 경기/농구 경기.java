@@ -1,26 +1,48 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 public class Main {
 
-    public static void main(String[] args) {
-        int[] a = new int[26];
-        Scanner sc = new Scanner(System.in);
-        int num = sc.nextInt();
-        String buffer = sc.nextLine();
-        for (int i = 0; i < num; i++) {
-            String temp = sc.nextLine();
-            a[temp.charAt(0) - 'a']++;
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static StringTokenizer st;
+
+    public static void main(String[] args) throws IOException {
+        new Main().solution();
+    }
+
+    public void solution() throws IOException {
+        int n = Integer.parseInt(br.readLine());
+        Map<Character, Integer> map = new HashMap<>();
+
+        for (int i = 0; i < n; i++) {
+            char now = br.readLine().charAt(0);
+            map.put(now, map.getOrDefault(now, 0) + 1);
         }
 
-        boolean flag = false;
-        for (int i = 0; i < 26; i++) {
-            if(a[i] >= 5){
-                System.out.print((char)(i + 'a'));
-                flag = true;
+        List<Character> players = new ArrayList<>();
+        for (Character key : map.keySet()) {
+            Integer count = map.get(key);
+            if (count < 5) {
+                continue;
             }
+            players.add(key);
         }
-        if(flag == false){
+
+        Collections.sort(players);
+        if (players.isEmpty()) {
             System.out.println("PREDAJA");
+        } else {
+            StringBuilder sb = new StringBuilder();
+            players.forEach(sb::append);
+
+            System.out.println(sb);
         }
     }
 }
