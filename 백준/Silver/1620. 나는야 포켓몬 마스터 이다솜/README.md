@@ -4,15 +4,15 @@
 
 ### 성능 요약
 
-메모리: 55076 KB, 시간: 484 ms
+메모리: 55560 KB, 시간: 476 ms
 
 ### 분류
 
-자료 구조, 해시를 사용한 집합과 맵
+자료 구조, 집합과 맵, 해시를 사용한 집합과 맵
 
 ### 제출 일자
 
-2025년 3월 28일 18:20:28
+2025년 9월 14일 20:43:46
 
 ### 문제 설명
 
@@ -84,7 +84,7 @@
 
 <p>이다솜 : 여기가 사천왕과 대결하려면 가야하는 곳인가..</p>
 
-<p><img alt="" src="https://www.acmicpc.net/upload/201004/p9.PNG" style="height:181px; width:274px"></p>
+<p><img alt="" src="" style="height:181px; width:274px"></p>
 
 <p>경비원 : 사천왕과 대결을 하려면, 마을의 체육관 리더를 이겨서 배지를 8개를 모아야 한다네... 배지를 모아서 오도록 하게</p>
 
@@ -108,7 +108,7 @@
 
 <p><img alt="" src="" style="height:183px; width:274px"></p>
 
-<p><img alt="" src="https://www.acmicpc.net/upload/201004/pf.PNG" style="height:183px; width:274px"></p>
+<p><img alt="" src="" style="height:183px; width:274px"></p>
 
 <p><img alt="" src="" style="height:181px; width:274px"></p>
 

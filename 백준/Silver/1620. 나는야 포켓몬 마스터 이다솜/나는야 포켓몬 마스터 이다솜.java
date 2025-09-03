@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 public class Main {
+
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static StringTokenizer st;
 
@@ -13,26 +14,35 @@ public class Main {
         new Main().solution();
     }
 
-    void solution() throws IOException {
+    public void solution() throws IOException {
         st = new StringTokenizer(br.readLine());
 
         int n = Integer.parseInt(st.nextToken());
         int m = Integer.parseInt(st.nextToken());
 
-        Map<String, String> map = new HashMap<>();
+        Map<String, Integer> poketmons = new HashMap<>();
+        Map<Integer, String> numbers = new HashMap<>();
+
         for (int i = 1; i <= n; i++) {
             String poketmon = br.readLine();
 
-            map.put(poketmon, String.valueOf(i));
-            map.put(String.valueOf(i), poketmon);
+            poketmons.put(poketmon, i);
+            numbers.put(i, poketmon);
         }
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < m; i++) {
-            sb.append(map.get(br.readLine())).append("\n");
+            String now = br.readLine();
+
+            if (Character.isDigit(now.charAt(0))) {
+                sb.append(numbers.get(Integer.parseInt(now)));
+            } else {
+                sb.append(poketmons.get(now));
+            }
+
+            sb.append("\n");
         }
 
         System.out.println(sb);
     }
-
 }
