@@ -1,50 +1,65 @@
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
 public class Main {
-    static int[] dx = {1, 0, -1, 0};
-    static int[] dy = {0, 1, 0, -1};
-    static int[][] A;
-    static boolean[][] visited;
-    static int N;
-    static int M;
-    
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-        A = new int[N][M];
-        visited = new boolean[N][M];
-        
-        for(int i = 0; i < N; i++) {
-            st = new StringTokenizer(br.readLine());
-            String line = st.nextToken();
-            for(int j = 0; j < M; j++) {
-                A[i][j] = Integer.parseInt(line.substring(j, j+1));
+
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static StringTokenizer st;
+
+    public static void main(String[] args) throws IOException {
+        new Main().solution();
+    }
+
+    static int[] dy = {-1, 0, 1, 0};
+    static int[] dx = {0, 1, 0, -1};
+
+    public void solution() throws IOException {
+        st = new StringTokenizer(br.readLine());
+
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+
+        int[][] map = new int[n][m];
+        boolean[][] visited = new boolean[n][m];
+
+        for (int i = 0; i < n; i++) {
+            String now = br.readLine();
+            for (int j = 0; j < m; j++) {
+                map[i][j] = now.charAt(j) == '1' ? 1 : 0;
             }
         }
-        BFS(0, 0);
-        System.out.println(A[N-1][M-1]);
-    }
-    
-    public static void BFS(int i, int j) {
+
         Queue<int[]> queue = new LinkedList<>();
-        queue.offer(new int[]{i, j});
-        visited[i][j] = true;
-        while(!queue.isEmpty()) {
+        queue.offer(new int[]{0, 0, 1});
+
+        visited[0][0] = true;
+        while (!queue.isEmpty()) {
             int[] now = queue.poll();
-            for(int k = 0; k < 4; k++) {
-                int x = now[0] + dx[k];
-                int y = now[1] + dy[k];
-                if(x >= 0 && y >= 0 && x < N && y < M) {
-                    if(A[x][y] != 0 && !visited[x][y]) {
-                        visited[x][y] = true;
-                        A[x][y] = A[now[0]][now[1]] + 1;
-                        queue.offer(new int[]{x, y});
-                    }
+
+            for (int i = 0; i < 4; i++) {
+                int nextY = now[0] + dy[i];
+                int nextX = now[1] + dx[i];
+
+                if (nextY < 0 || nextY >= n || nextX < 0 || nextX >= m) {
+                    continue;
                 }
+                if (visited[nextY][nextX]) {
+                    continue;
+                }
+                if (map[nextY][nextX] == 0) {
+                    continue;
+                }
+                if (nextY == n - 1 && nextX == m - 1) {
+                    System.out.println(now[2] + 1);
+                    return;
+                }
+
+                visited[nextY][nextX] = true;
+                queue.offer(new int[]{nextY, nextX, now[2] + 1});
             }
         }
     }
