@@ -2,8 +2,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -51,31 +49,24 @@ public class Main {
             return j[3] - i[3];
         });
 
-        int nowRanking = 1;
-        Map<Integer, Integer> ranking = new HashMap<>();
+        int targetIndex = 0;
         for (int i = 0; i < n; i++) {
-            int[] now = results[i];
-
-            if (ranking.containsKey(now[0])) {
-                continue;
-            } else {
-                ranking.put(now[0], nowRanking);
+            if (results[i][0] == country) {
+                targetIndex = i;
+                break;
             }
-
-            for (int j = i + 1; j < n; j++) {
-                int[] next = results[j];
-
-                if (now[1] == next[1] && now[2] == next[2] && now[3] == next[3]) {
-                    ranking.put(next[0], nowRanking);
-                } else {
-                    break;
-                }
-            }
-
-            nowRanking++;
         }
 
-        System.out.println(ranking.get(country));
+        int rank = targetIndex;
+        while (rank > 0
+                && results[rank - 1][1] == results[targetIndex][1]
+                && results[rank - 1][2] == results[targetIndex][2]
+                && results[rank - 1][3] == results[targetIndex][3]
+        ) {
+            rank--;
+        }
+
+        System.out.println(rank + 1);
     }
 
 }
