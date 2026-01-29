@@ -1,0 +1,79 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Stack;
+import java.util.StringTokenizer;
+
+public class Main {
+
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static StringTokenizer st;
+
+    public static void main(String[] args) throws IOException {
+        new Main().solution();
+    }
+
+    static int n;
+    static int k;
+    static int[] number;
+
+    public void solution() throws IOException {
+        st = new StringTokenizer(br.readLine());
+
+        n = Integer.parseInt(st.nextToken());
+        k = Integer.parseInt(st.nextToken());
+
+        number = new int[n];
+        String line = br.readLine();
+        for (int i = 0; i < n; i++) {
+            number[i] = line.charAt(i) - '0';
+        }
+
+        Stack<Integer> stack = new Stack<>();
+        stack.push(number[0]);
+        int index = 1;
+
+        while (!stack.isEmpty() && k > 0 && index < n) {
+            while (!stack.isEmpty() && k > 0 && stack.peek() < number[index]) {
+                stack.pop();
+                k--;
+            }
+
+            stack.push(number[index++]);
+        }
+
+        if (index < n) {
+            for (int i = index; i < n; i++) {
+                stack.push(number[i]);
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        while (!stack.isEmpty()) {
+            sb.append(stack.pop());
+        }
+
+        if (k > 0) {
+
+            for (int i = 0; i < k; i++) {
+                String now = sb.toString();
+
+                int minIndex = 0;
+                int min = now.charAt(0) - '0';
+
+                for (int j = 1; j < now.length(); j++) {
+                    if (min > now.charAt(j) - '0') {
+                        min = now.charAt(j) - '0';
+                        minIndex = j;
+                    }
+                }
+
+                sb.deleteCharAt(minIndex);
+            }
+        }
+
+        System.out.println(sb.reverse());
+    }
+
+}
