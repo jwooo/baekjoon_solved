@@ -1,0 +1,36 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class Main {
+
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static StringTokenizer st;
+
+    public static void main(String[] args) throws IOException {
+        new Main().solution();
+    }
+
+    public void solution() throws IOException {
+        int n = Integer.parseInt(br.readLine());
+
+        int[] arr = new int[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = Integer.parseInt(br.readLine());
+        }
+
+        int answer = 0;
+        for (int i = n - 2; i >= 0; i--) {
+            if (arr[i] >= arr[i + 1]) {
+                int difference = arr[i] - arr[i + 1] + 1;
+
+                answer += difference;
+                arr[i] = arr[i] - (difference);
+            }
+        }
+
+        System.out.println(answer);
+    }
+}
